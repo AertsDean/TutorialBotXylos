@@ -9,14 +9,14 @@ var botbuilder_azure = require("botbuilder-azure");
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
+    console.log('%s listening to %s', server.name, server.url);
 });
-  
+
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
     appId: process.env.MicrosoftAppId,
     appPassword: process.env.MicrosoftAppPassword,
-    openIdMetadata: process.env.BotOpenIdMetadata 
+    openIdMetadata: process.env.BotOpenIdMetadata
 });
 
 // Listen for messages from users 
@@ -80,4 +80,8 @@ bot.dialog('CancelDialog',
 ).triggerAction({
     matches: 'Cancel'
 })
+
+
+bot.dialog('Greetings', require('./Dialogs/Main/greetings')).triggerAction({ matches: 'Greeting'})
+bot.dialog('EventBook', require('./Dialogs/Events/eventBook')).triggerAction({ matches: 'Events.Book' })
 
