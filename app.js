@@ -29,17 +29,21 @@ server.post('/api/messages', connector.listen());
 * ---------------------------------------------------------------------------------------- */
 
 var tableName = 'botdata';
-var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
+var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, 'DefaultEndpointsProtocol=https;AccountName=tutorialbotxylos8dc2;AccountKey=b5tdghAGneBjkoMsDD9+PQZNhIikUZS7AnBjJc/CwNqbbThRPGfvXMgAZttXcIvGGBLD6pJTSGLfdAZX600CvA==;');
 var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azureTableClient);
 
 // Create your bot with a function to receive messages from the user
 // This default message handler is invoked if the user's utterance doesn't
 // match any intents handled by other dialogs.
-var bot = new builder.UniversalBot(connector, function (session, args) {
+bot = new builder.UniversalBot(connector, function (session, args) {
     session.send('You reached the default message handler. You said \'%s\'.', session.message.text);
 });
 
-bot.set('storage', tableStorage);
+// bot.set('storage', tableStorage);
+
+// Temporary local storage
+var inMemoryStorage = new builder.MemoryBotStorage();
+bot.set('storage', inMemoryStorage);
 
 // LuisModelUrl, found in app settings on luis.ai
 const LuisModelUrl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/646a964e-f456-4798-b86f-f527feccd4c9?subscription-key=dd7bc79c8ff743e89cf15b84ada60c5c&verbose=true&timezoneOffset=0&q=';
@@ -69,6 +73,8 @@ bot.dialog('CancelDialog',
 })
 
 
-bot.dialog('Greetings', require('./Dialogs/Main/greetings')).triggerAction({ matches: 'Greeting'})
-bot.dialog('EventBook', require('./Dialogs/Events/eventBook')).triggerAction({ matches: 'Events.Book' })
+bot.dialog('Greetings', require('./dialogs/main/greetings')).triggerAction({ matches: 'Greeting' })
+bot.dialog('Introduction', require('./dialogs/main/introduction'))
+bot.dialog('EventBook', require('./dialogs/events/eventBook')).triggerAction({ matches: 'Events.Book' })
+
 

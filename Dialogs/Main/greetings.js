@@ -1,11 +1,10 @@
-var builder = require('botbuilder');
-
 module.exports = [
     function (session) {
-        session.send('Hello, welcome to my first bot');
-        session.beginDialog('askName');
+        session.send('Greetings!');
+        session.beginDialog('Introduction', session.userData.profile);
     },
     function (session, results) {
-        session.endDialog('Hello ${results.response}!')
+        session.user.profile = results.response;
+        session.endDialog('Hello %s from %s!', session.userData.userName, session.userData.country);
     }
 ]
