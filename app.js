@@ -32,11 +32,12 @@ var tableName = 'botdata';
 var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, 'DefaultEndpointsProtocol=https;AccountName=tutorialbotxylos8dc2;AccountKey=b5tdghAGneBjkoMsDD9+PQZNhIikUZS7AnBjJc/CwNqbbThRPGfvXMgAZttXcIvGGBLD6pJTSGLfdAZX600CvA==;');
 var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azureTableClient);
 
+
 // Create your bot with a function to receive messages from the user
 // This default message handler is invoked if the user's utterance doesn't
 // match any intents handled by other dialogs.
 bot = new builder.UniversalBot(connector, function (session, args) {
-    session.send('You reached the default message handler. You said \'%s\'.', session.message.text);
+    session.beginDialog('Hello, I\'m an experimental bot built by Dean', session.userData.profile);
 });
 
 // bot.set('storage', tableStorage);

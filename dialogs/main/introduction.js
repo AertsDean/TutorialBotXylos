@@ -4,7 +4,7 @@ module.exports = [
     function (session, args, next) {
         session.dialogData.profile = args || {};
         if (!session.dialogData.profile.userName) {
-            builder.Prompts.text(session, 'What is your name?');
+            builder.Prompts.text(session, 'Hello my name is bot. What is your name?');
         } else {
             next();
         }
