@@ -10,12 +10,14 @@
   "author": "Dean Aerts",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "botbuilder": "^3.13.1",
     "botbuilder-azure": "^3.0.4",
+    "lodash": "^4.17.5",
     "restify": "^5.0.0"
   },
   "devDependencies": {
-    "request": "^2.81.0",
+    "request": "^2.85.0",
     "zip-folder": "^1.0.0"
   }
 }

@@ -32,7 +32,6 @@ var tableName = 'botdata';
 var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, 'DefaultEndpointsProtocol=https;AccountName=tutorialbotxylos8dc2;AccountKey=b5tdghAGneBjkoMsDD9+PQZNhIikUZS7AnBjJc/CwNqbbThRPGfvXMgAZttXcIvGGBLD6pJTSGLfdAZX600CvA==;');
 var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azureTableClient);
 
-
 // Create your bot with a function to receive messages from the user
 // This default message handler is invoked if the user's utterance doesn't
 // match any intents handled by other dialogs.
@@ -56,6 +55,36 @@ const LuisModelUrl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/
 // Create a recognizer that gets intents from LUIS, and add it to the bot
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 bot.recognizer(recognizer);
+
+// Azure Search
+var SearchLibrary = require('./SearchDialogLibrary');
+var AzureSearch = require('./SearchProviders/azure-search');
+
+var azureSearchClient = AzureSearch.create('tutorialbotxylos', '006CBA103B1F77E014AEB47AEEF8B624', 'realestate-us-sample');
+var ResultsMapper = SearchLibrary.defaultResultsMapper(ToSearchHit);
+
+// Register Search Dialogs Library with bot
+bot.library(SearchLibrary.create({
+    multipleSelection: true,
+    search: function (query) { return azureSearchClient.search(query).then(ResultsMapper); },
+    refiners: ['region', 'city', 'type'], // customize your own refiners 
+    refineFormatter: function (refiners) {
+        return _.zipObject(
+            refiners.map(function (r) { return 'By ' + _.capitalize(r); }),
+            refiners);
+    }
+}));
+
+function ToSearchHit(realstate) {
+    return {
+        key: realstate.listingId,
+        title: util.format('%d bedroom, %d bath in %s, $%s',
+            realstate.beds, realstate.baths, realstate.city, realstate.price.toFixed(2)),
+        description: realstate.description,
+        imageUrl: realstate.thumbnail
+    };
+}
+
 
 // Add a dialog for each intent that the LUIS app recognizes.
 // See https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-recognize-intent-luis 
@@ -81,4 +110,6 @@ bot.dialog('CancelDialog',
 bot.dialog('Greetings', require('./dialogs/main/greetings')).triggerAction({ matches: 'Greeting' })
 bot.dialog('Introduction', require('./dialogs/main/introduction'))
 bot.dialog('BookEvent', require('./dialogs/events/bookEvent')).triggerAction({ matches: 'Events.Book' })
+bot.dialog('ShowEvents', require('./dialogs/events/showEvents')).triggerAction({ matches: 'Events.Show' })
+bot.dialog('Search', require('./dialogs/search/search')).triggerAction({ matches: 'Search' })
 
