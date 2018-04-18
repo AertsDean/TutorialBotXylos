@@ -37,7 +37,11 @@ var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azu
 // This default message handler is invoked if the user's utterance doesn't
 // match any intents handled by other dialogs.
 bot = new builder.UniversalBot(connector, function (session, args) {
-    session.beginDialog('Hello, I\'m an experimental bot built by Dean', session.userData.profile);
+    session.send('Hello, I\'m an experimental event bot built by Dean');
+
+    if (!session.userData.events) {
+        session.userData.notes = {};
+    }
 });
 
 // bot.set('storage', tableStorage);
@@ -76,6 +80,5 @@ bot.dialog('CancelDialog',
 
 bot.dialog('Greetings', require('./dialogs/main/greetings')).triggerAction({ matches: 'Greeting' })
 bot.dialog('Introduction', require('./dialogs/main/introduction'))
-bot.dialog('EventBook', require('./dialogs/events/eventBook')).triggerAction({ matches: 'Events.Book' })
-
+bot.dialog('BookEvent', require('./dialogs/events/bookEvent')).triggerAction({ matches: 'Events.Book' })
 
