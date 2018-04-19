@@ -2,6 +2,7 @@ module.exports = function () {
     // Azure Search
     var SearchLibrary = require('../SearchDialogLibrary');
     var AzureSearch = require('../SearchProviders/azure-search');
+    var util = require('util');
 
     var azureSearchClient = AzureSearch.create(process.env.AZURE_SEARCH_NAME, process.env.AZURE_SEARCH_KEY, process.env.INDEX_NAME);
     var ResultsMapper = SearchLibrary.defaultResultsMapper(ToSearchHit);

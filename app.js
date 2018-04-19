@@ -11,14 +11,11 @@ require('./Settings/storageConfig.js')();
 require('./Services/LUIS')();
 require('./Services/AzureSearch')();
 
-
-
 // Add a dialog for each intent that the LUIS app recognizes.
 // See https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-recognize-intent-luis 
 
-// Entry point
-var searchIndex = require('./SearchDialogLibrary/index')
 
+// Entry point
 bot.dialog('/', [
     function (session) {
         session.send('Welcome to my first bot');
@@ -29,5 +26,5 @@ bot.dialog('Greetings', require('./dialogs/main/greetings')).triggerAction({ mat
 bot.dialog('Introduction', require('./dialogs/main/introduction'))
 bot.dialog('BookEvent', require('./dialogs/events/bookEvent')).triggerAction({ matches: 'Events.Book' })
 bot.dialog('ShowEvents', require('./dialogs/events/showEvents')).triggerAction({ matches: 'Events.Show' })
-bot.dialog('Search', searchIndex.begin).triggerAction({ matches: 'Search' })
+bot.dialog('Search', require('./dialogs/main/search')).triggerAction({ matches: 'Search' })
 
