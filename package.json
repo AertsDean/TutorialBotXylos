@@ -13,6 +13,7 @@
     "bluebird": "^3.5.1",
     "botbuilder": "^3.13.1",
     "botbuilder-azure": "^3.0.4",
+    "dotenv": "^5.0.1",
     "lodash": "^4.17.5",
     "restify": "^5.0.0"
   },
