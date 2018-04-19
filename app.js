@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
-A simple Language Understanding (LUIS) bot for the Microsoft Bot Framework. 
+A simple Language Understanding (LUIS) bot for the Microsoft Bot Framework.
+Built by Dean Aerts to learn/experiment about the Microsoft Bot Framework. 
 -----------------------------------------------------------------------------*/
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
@@ -16,6 +17,8 @@ require('./Services/AzureSearch')();
 // See https://docs.microsoft.com/en-us/bot-framework/nodejs/bot-builder-nodejs-recognize-intent-luis 
 
 // Entry point
+var searchIndex = require('./SearchDialogLibrary/index')
+
 bot.dialog('/', [
     function (session) {
         session.send('Welcome to my first bot');
@@ -26,5 +29,5 @@ bot.dialog('Greetings', require('./dialogs/main/greetings')).triggerAction({ mat
 bot.dialog('Introduction', require('./dialogs/main/introduction'))
 bot.dialog('BookEvent', require('./dialogs/events/bookEvent')).triggerAction({ matches: 'Events.Book' })
 bot.dialog('ShowEvents', require('./dialogs/events/showEvents')).triggerAction({ matches: 'Events.Show' })
-bot.dialog('Search', require('./dialogs/search/search')).triggerAction({ matches: 'Search' })
+bot.dialog('Search', searchIndex.begin).triggerAction({ matches: 'Search' })
 
