@@ -7,6 +7,7 @@ module.exports = [
     },
     function (session, args) {
         // Process selected search results
-        session.send('Here you go: %s', args.selection.map(function (i) { return i.key; }).join(', '));
+        session.send('Here you go: %s', args.selection.map(function (i) { return i.title; }).join(', '));
+        session.endDialog;
     }
 ]
