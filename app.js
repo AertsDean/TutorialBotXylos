@@ -21,8 +21,9 @@ bot.dialog('/', [
     }
 ])
 
-bot.dialog('Greetings', require('./dialogs/main/greetings')).triggerAction({ matches: 'Greeting' })
-bot.dialog('Introduction', require('./dialogs/main/introduction'))
-bot.dialog('BookEvent', require('./dialogs/events/bookEvent')).triggerAction({ matches: 'Events.Book' })
-bot.dialog('ShowEvents', require('./dialogs/events/showEvents')).triggerAction({ matches: 'Events.Show' })
-bot.dialog('Search', require('./dialogs/main/search')).triggerAction({ matches: 'Search' })
+bot.dialog('Greetings', require('./Dialogs/Main/greetings')).triggerAction({ matches: 'Greeting' })
+bot.dialog('Introduction', require('./Dialogs/Main/introduction'))
+bot.dialog('Search', require('./Dialogs/Main/search')).triggerAction({ matches: 'Search' })
+bot.dialog('AdaptiveCard', require('./Dialogs/Cards/adaptiveCard')).triggerAction({matches: [/adaptivecard/i]})
+bot.dialog('BookEvent', require('./Dialogs/Events/bookEvent')).triggerAction({ matches: 'Events.Book' })
+bot.dialog('ShowEvents', require('./Dialogs/Events/showEvents')).triggerAction({ matches: 'Events.Show' })
